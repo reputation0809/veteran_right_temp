@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>榮民與榮眷資訊</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="container">
+        <h2>請選擇身份</h2>
+        <div class="btn-group">
+            <button class="btn" id="btn-veteran">榮民</button>
+            <button class="btn" id="btn-family">榮眷</button>
+        </div>
+
+        <div id="veteranOptions" class="hidden">
+            <h3>請選擇榮民服務選項：</h3>
+            <div class="btn-group">
+                <button class="btn veteran-service" data-value="identity">榮民證</button>
+                <button class="btn veteran-service" data-value="school">就學</button>
+                <button class="btn veteran-service" data-value="work">就業</button>
+                <button class="btn veteran-service" data-value="medical">就醫</button>
+                <button class="btn veteran-service" data-value="care">就養</button>
+                <button class="btn veteran-service" data-value="service_care">服務照顧</button>
+                <button class="btn veteran-service" data-value="retire_money">退休俸退除給付</button>
+            </div>
+        </div>
+
+        <div id="familyOptions" class="hidden">
+            <h3>請選擇榮眷服務選項：</h3>
+            <div class="btn-group">
+                <button class="btn family-service" data-value="fam_identity">家戶代表證</button>
+                <button class="btn family-service" data-value="fam_funeral">喪葬補助</button>
+                <button class="btn family-service" data-value="fam_cru_assist">重點救助</button>
+                <button class="btn family-service" data-value="fam_emer_assist">急難救助</button>
+                <button class="btn family-service" data-value="fam_season">三節慰問</button>
+                <button class="btn family-service" data-value="fam_season">喪葬慰問</button>
+                <button class="btn family-service" data-value="fam_school">就學補助</button>
+                <button class="btn family-service" data-value="fam_lunch">午餐補助</button>
+                <button class="btn family-service" data-value="fam_house">榮家安養、失能(養護、失智)照顧</button>
+            </div>
+        </div>
+
+        <div id="conditions" class="content-box hidden">
+            <h3>是否符合以下條件之一：</h3>
+            <div id="conditions-list"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

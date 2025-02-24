@@ -1,0 +1,102 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #74ebd5, #acb6e5);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+}
+
+/* 主要區塊 */
+.container {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 按鈕樣式 */
+.btn-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: 2px solid #007bff;
+    background-color: white;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn.selected {
+    background-color: #007bff;
+    color: white;
+}
+
+/* 內容區塊 */
+.content-box {
+    width: 100%;
+    border-left: 5px solid #007bff;
+    padding: 15px;
+    margin-top: 15px;
+    background-color: #ffffff;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: left;
+}
+
+/* 條件區塊 */
+#conditions {
+    width: 100%;
+}
+
+#conditions-list div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+/* 調整 checkbox 與文字的間距 */
+#conditions-list input[type="checkbox"] {
+    margin-right: 10px;
+    transform: scale(1.3);
+}
+
+/* 預設隱藏區塊 */
+.hidden {
+    display: none;
+}
+
+/* 手機版最佳化 */
+@media (max-width: 600px) {
+    .container {
+        width: 95%;
+        padding: 15px;
+    }
+}
+
+#success-message {
+    background-color: #e7f5ff;
+    color: #0c5460;
+    border-left: 5px solid #17a2b8;
+    margin-top: 15px;
+    padding: 10px;
+}

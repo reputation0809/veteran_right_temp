@@ -129,9 +129,9 @@ const messages = {
     "condition0": [
         "恭喜！你符合申請榮民證的資格！",
         "請檢附以下文件：",
-        "- 身分證",
-        "- 最近三個月內一吋脫帽半身照",
-        "- 申請表"
+        "<strong>- 身分證</strong>",
+        "<strong>- 最近三個月內一吋脫帽半身照</strong>",
+        "<strong>- 申請表</strong>"
     ].join("<br>"),
     "condition1": "你可以申請B補助，快去看看！",
     "condition2": "符合條件C，請準備相關文件。",

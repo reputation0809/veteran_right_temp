@@ -94,35 +94,33 @@ function showConditions(service) {
 }
 
 function checkConditions() {
-    const checkboxes = document.querySelectorAll("#conditions-list input[type='checkbox']");
-    const messageContainer = document.getElementById("success-message");
+    let messageContainer = document.getElementById("success-message");
 
     // 如果 message 容器不存在，就創建一個
     if (!messageContainer) {
-        const newMessage = document.createElement("div");
-        newMessage.id = "success-message";
-        newMessage.classList.add("content-box");
-        document.querySelector(".container").appendChild(newMessage);
-    } else {
-        messageContainer.innerHTML = ""; // 先清空
+        messageContainer = document.createElement("div");
+        messageContainer.id = "success-message";
+        messageContainer.classList.add("content-box");
+        document.querySelector(".container").appendChild(messageContainer);
     }
 
+    messageContainer.innerHTML = ""; // 先清空內容
+
     // 檢查每個 checkbox 的勾選狀態
+    let hasMessage = false;
+    const checkboxes = document.querySelectorAll("#conditions-list input[type='checkbox']");
+
     checkboxes.forEach(checkbox => {
         if (checkbox.checked && messages[checkbox.id]) {
-            // 如果有對應的訊息，就顯示
             const message = document.createElement("p");
-            message.innerHTML = messages[checkbox.id];
+            message.innerHTML = messages[checkbox.id].replace(/\n/g, "<br>"); // 換行處理
             messageContainer.appendChild(message);
+            hasMessage = true;
         }
     });
 
-    // 如果都沒有選，則隱藏訊息容器
-    if (messageContainer.innerHTML === "") {
-        messageContainer.style.display = "none";
-    } else {
-        messageContainer.style.display = "block";
-    }
+    // 如果沒有選任何條件，隱藏 message 容器
+    messageContainer.style.display = hasMessage ? "block" : "none";
 }
 
 const messages = {

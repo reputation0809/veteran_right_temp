@@ -49,6 +49,12 @@ document.querySelectorAll(".family-service").forEach(button => {
 function showConditions(service) {
     const conditionsDiv = document.getElementById("conditions");
     const conditionsList = document.getElementById("conditions-list");
+  const messageContainer = document.getElementById("success-message");
+  
+    if(messageContainer){
+      messageContainer.innerHTML = "";
+      messageContainer.style.display = "none";
+    }
 
     conditionsList.innerHTML = ""; // 清空條件
 
@@ -56,9 +62,10 @@ function showConditions(service) {
         "identity": ["志願服現役滿10年以上", "於79年2月9日前入營服志願役軍（士）官","於94年8月9日前入營之志願役士兵","因作戰或因公致病、傷或身心障礙而失去工作能力","曾參加民國47年八二三臺海保衛戰役之軍士官兵（含金門馬祖民防自衛隊）"],
         "school": ["退伍軍人報考高中以上學校", "二專、二技、四技／大學推甄入學", ""],
         "work": ["條件 A", "條件 B"],
-        "care": ["榮民服役期間因戰(公)傷殘、且無固定職業", "榮民年滿61歲且無固定職業，且全戶所得低於一定標準"],
+        "care": ["榮民服役期間因戰(公)傷殘、且無固定職業", "榮民年滿61歲", "無固定職業", "全戶所得低於一定標準", "未公費就養之榮民", "榮民之無固定職業之父母及配偶"],
         "medical": ["無職業榮民", "有職業榮民"],
         "service_care": ["榮民之30歲以下子女，就讀高中職以下學校符合申請資格者", "榮民之30歲以下子女，就讀大學及研究所符合申請資格者"],
+        "service_lunch": ["就讀國中、國小之榮民或榮民遺眷子女", "符合低收入戶、中低收入戶","因家庭突發因素無力支付午餐費","或經學校認定清寒無力支付午餐費，並納入午餐補助","有特殊事由經本會評估核認者等條件者"],
         "retire_money": ["條件 M", "條件 N"],
         "fam_identity": ["亡故榮民之配偶，且未再婚者", "亡故榮民之直系血親尊親屬", "亡故榮民之未滿 20 歲未婚子女或未滿 25 歲且就讀國內大學（含）以下學校之未婚子女", "亡故榮民之持有中度以上身心障礙證明之未婚子女", "戰訓或因公殞命軍人之遺族", "領有義士證者之遺眷"],
         "fam_funeral": ["條件 丙", "條件 丁"],
@@ -81,16 +88,69 @@ function showConditions(service) {
             const div = document.createElement("div");
             div.appendChild(checkbox);
             div.appendChild(label);
+          
+            if(service === "service_lunch" && index > 0){
+              div.style.display = "none";
+            }
+            if(service === "care" && (index === 2 || index ===3)){
+              div.style.display = "none";
+            }
+          
             conditionsList.appendChild(div);
           
             // 為每個 Checkbox 加上事件監聽器
             checkbox.addEventListener("change", checkConditions);
         });
+      if (service === "service_lunch") {    document.getElementById("condition0").addEventListener("change", () => toggleOtherOptions(service));
+        }
+      if (service === "care") {       document.getElementById("condition1").addEventListener("change", () => toggleOtherOptions(service));
+        }
+
+        checkConditions(); // 初始化檢查資格
     } else {
         conditionsDiv.classList.add("hidden");
     }
   
     // checkbox.id = `condition${index}`;
+}
+
+function toggleOtherOptions(service_choose) {
+    // console.log(service_choose)
+    if(service_choose === "service_lunch"){
+      const firstCheckbox = document.getElementById("condition0");
+      const otherCheckboxes = document.querySelectorAll("#conditions-list input[type='checkbox']:not(#condition0)");
+
+      otherCheckboxes.forEach(checkbox => {
+          const parentDiv = checkbox.parentElement;
+          if (firstCheckbox.checked) {
+              parentDiv.style.display = "block"; // 顯示其他條件
+          } else {
+              parentDiv.style.display = "none";  // 隱藏其他條件，且取消勾選
+              checkbox.checked = false;
+          }
+      });}
+    
+      if(service_choose === "care"){
+        const condition1 = document.getElementById("condition1");
+        const condition2 = document.getElementById("condition2").parentElement;
+        const condition3 = document.getElementById("condition3").parentElement;
+        
+        const condition2_c = document.getElementById("condition2");
+        const condition3_c = document.getElementById("condition3");
+        
+        if(condition1.checked){
+          condition2.style.display = "block";
+          condition3.style.display = "block";
+        }
+        else{
+          condition2.style.display = "none";
+          condition3.style.display = "none";
+          condition2_c.checked = false;
+          condition3_c.checked = false;
+        }
+    }
+
+    checkConditions(); // 檢查是否符合資格
 }
 
 function checkConditions() {
@@ -106,32 +166,88 @@ function checkConditions() {
 
     messageContainer.innerHTML = ""; // 先清空內容
 
-    // 檢查每個 checkbox 的勾選狀態
     let hasMessage = false;
     const checkboxes = document.querySelectorAll("#conditions-list input[type='checkbox']");
 
     checkboxes.forEach(checkbox => {
-        if (checkbox.checked && messages[checkbox.id]) {
-            const message = document.createElement("p");
-            message.innerHTML = messages[checkbox.id].replace(/\n/g, "<br>"); // 換行處理
-            messageContainer.appendChild(message);
-            hasMessage = true;
+        if (checkbox.checked) {
+            let messageText = "";
+
+            // 根據不同的 selectedService 顯示不同的訊息
+            if (selectedService === "identity") {
+                messageText = messages.identity[checkbox.id] || "";
+            } else if (selectedService === "service_care") {
+                messageText = messages.service_care[checkbox.id] || "";
+            } else if (selectedService === "work") {
+                messageText = messages.work[checkbox.id] || "";
+            } else if (selectedService === "medical") {
+                messageText = messages.medical[checkbox.id] || "";
+            }
+
+            if (messageText) {
+                const message = document.createElement("p");
+                message.innerHTML = messageText.replace(/\n/g, "<br>"); // 換行處理
+                messageContainer.appendChild(message);
+                hasMessage = true;
+            }
         }
     });
+  
+    let service = selectedService; // 取得當前選擇的服務類型
+  
+    // **service_lunch 需要特殊判斷**
+    if (service === "service_lunch") {
+      const firstCheckbox = document.getElementById("condition0"); // 第一個條件
+      const otherCheckboxes = document.querySelectorAll("#conditions-list input[type='checkbox']:not(#condition0)");
+
+      let otherChecked = Array.from(otherCheckboxes).some(checkbox => checkbox.checked); // 是否有勾選其他條件
+
+      if (firstCheckbox.checked && otherChecked) {
+          const message = document.createElement("p");
+          message.innerHTML = `恭喜！你符合午餐補助申請資格！<br><strong>得申請例假日及寒暑假午餐補助金，每日以80元計</strong>`;
+          messageContainer.appendChild(message);
+          hasMessage = true;
+      }
+    }
+  
+    if (service === "care") {
+      const condition0 = document.getElementById("condition0");
+      const condition1 = document.getElementById("condition1");
+      const condition2 = document.getElementById("condition2");
+      const condition3 = document.getElementById("condition3");
+      const condition4 = document.getElementById("condition4");
+      const condition5 = document.getElementById("condition5");
+      
+      if((condition1.checked && (condition2.checked || condition3.checked)) || (condition0.checked)){
+        const message = document.createElement("p");
+        message.innerHTML = `恭喜！你符合<strong>公費就養</strong>申請資格！<br><strong>每月可領取就養給付1萬4,874元，並得依意願公費進住榮家</strong>`;
+        messageContainer.appendChild(message);
+        hasMessage = true;
+      }
+      else if(condition4.checked || condition5.checked){
+        const message = document.createElement("p");
+        message.innerHTML = `恭喜！你符合<strong>自費就養</strong>申請資格！<br><strong>得自付服務費(安養每月6,000元，養護每月6,800元)，至榮家安養或養護。</strong>`;
+        messageContainer.appendChild(message);
+        hasMessage = true;
+      }
+    }
 
     // 如果沒有選任何條件，隱藏 message 容器
     messageContainer.style.display = hasMessage ? "block" : "none";
 }
 
+const identity_message = "恭喜！您符合申請榮民證的資格！<br>請檢附以下文件：<strong><br>1.身分證<br>2.最近三個月內一吋脫帽半身照<br>3.申請表（可至本會官網下載列印或由榮服處提供）<br>4.委託代辦者：申請人附委託書、受委託人身分證正本</strong>";
+
 const messages = {
-    "condition0": [
-        "恭喜！你符合申請榮民證的資格！",
-        "請檢附以下文件：",
-        "<strong>- 身分證</strong>",
-        "<strong>- 最近三個月內一吋脫帽半身照</strong>",
-        "<strong>- 申請表</strong>"
-    ].join("<br>"),
-    "condition1": "你可以申請B補助，快去看看！",
-    "condition2": "符合條件C，請準備相關文件。",
-    "condition3": "符合條件D，可以申請特別優惠。"
+    "identity": {
+        "condition0": identity_message,
+        "condition1": identity_message,
+        "condition2": identity_message,
+        "condition3": identity_message,
+        "condition4": identity_message
+    },
+    "service_care":{
+        "condition0": "恭喜！您符合申請就學補助<br><strong>1.就讀五專前三年、高中、高職每學期補助3,800元<br>2.就讀國中、國小每學期補助500元</strong>",
+        "condition1":  "恭喜！您符合申請就學補助<br><strong>每學期補助金為公立大學8,000元、私立大學1萬元</strong>"
+    }
 };

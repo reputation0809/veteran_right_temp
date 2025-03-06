@@ -61,9 +61,9 @@ function showConditions(service) {
     const conditions = {
         "identity": ["志願服現役滿10年以上", "於79年2月9日前入營服志願役軍（士）官","於94年8月9日前入營之志願役士兵","因作戰或因公致病、傷或身心障礙而失去工作能力","曾參加民國47年八二三臺海保衛戰役之軍士官兵（含金門馬祖民防自衛隊）"],
         "school": ["退伍軍人報考高中以上學校", "二專、二技、四技／大學推甄入學", ""],
-        "work": ["條件 A", "條件 B"],
+        "work": ["退除役官兵參加全日制職業訓練班隊", "結訓次日起4個月內就業", "退除役官兵失業期間連續達1個月以上或屬非自願離職、經輔導會推介就業", "於服役期滿次日起1個月內之新退官兵、經輔導會推介就業", "連續就業滿3個月以上"],
         "care": ["榮民服役期間因戰(公)傷殘、且無固定職業", "榮民年滿61歲", "無固定職業", "全戶所得低於一定標準", "未公費就養之榮民", "榮民之無固定職業之父母及配偶"],
-        "medical": ["無職業榮民", "有職業榮民"],
+        "medical": ["榮民因為生活輔助需要，符合申請資格", "有診斷證明"],
         "service_care": ["榮民之30歲以下子女，就讀高中職以下學校符合申請資格者", "榮民之30歲以下子女，就讀大學及研究所符合申請資格者"],
         "service_lunch": ["就讀國中、國小之榮民或榮民遺眷子女", "符合低收入戶、中低收入戶","因家庭突發因素無力支付午餐費","或經學校認定清寒無力支付午餐費，並納入午餐補助","有特殊事由經本會評估核認者等條件者"],
         "retire_money": ["條件 M", "條件 N"],
@@ -178,12 +178,8 @@ function checkConditions() {
                 messageText = messages.identity[checkbox.id] || "";
             } else if (selectedService === "service_care") {
                 messageText = messages.service_care[checkbox.id] || "";
-            } else if (selectedService === "work") {
-                messageText = messages.work[checkbox.id] || "";
-            } else if (selectedService === "medical") {
-                messageText = messages.medical[checkbox.id] || "";
-            }
-
+            } 
+          
             if (messageText) {
                 const message = document.createElement("p");
                 message.innerHTML = messageText.replace(/\n/g, "<br>"); // 換行處理
@@ -227,6 +223,40 @@ function checkConditions() {
       else if(condition4.checked || condition5.checked){
         const message = document.createElement("p");
         message.innerHTML = `恭喜！你符合<strong>自費就養</strong>申請資格！<br><strong>得自付服務費(安養每月6,000元，養護每月6,800元)，至榮家安養或養護。</strong>`;
+        messageContainer.appendChild(message);
+        hasMessage = true;
+      }
+    }
+  
+    if (service === "medical") {
+      const condition0 = document.getElementById("condition0");
+      const condition1 = document.getElementById("condition1");
+    
+      if(condition0.checked && condition1.checked){
+        const message = document.createElement("p");
+        message.innerHTML = `恭喜！你符合<strong>輔具輔助</strong>申請資格！<br><strong>可就近向本會各縣市榮民服務處或榮譽國民之家申請<br>輪椅、助聽器、眼鏡、義眼．．．等輔具及鑲牙的補助</strong>`;
+        messageContainer.appendChild(message);
+        hasMessage = true;
+      }
+    }
+  
+    if(service === "work"){
+      const condition0 = document.getElementById("condition0");
+      const condition1 = document.getElementById("condition1");
+      const condition2 = document.getElementById("condition2");
+      const condition3 = document.getElementById("condition3");
+      const condition4 = document.getElementById("condition4");
+      
+      if(condition0.checked && condition1.checked && condition4.checked){
+        const message = document.createElement("p");
+        message.innerHTML = `恭喜！你得<strong>發給訓後就業穩定津貼</strong>！<br><strong>榮民前半年每月1萬2千元，後半年每月8千元；第二類退除役官兵前半年每月6千元，後半年每月4千元。</strong>`;
+        messageContainer.appendChild(message);
+        hasMessage = true;
+      }
+      
+      if((condition2.checked || condition3.checked) && condition4.checked){
+        const message = document.createElement("p");
+        message.innerHTML = `恭喜！你得<strong>發給推介就業穩定津貼</strong>！<br><strong>榮民每月8千元；第二類退除役官兵每月4千元。 </strong>`;
         messageContainer.appendChild(message);
         hasMessage = true;
       }

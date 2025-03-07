@@ -214,7 +214,7 @@ function checkConditions() {
       const condition4 = document.getElementById("condition4");
       const condition5 = document.getElementById("condition5");
       
-      if((condition1.checked && (condition2.checked || condition3.checked)) || (condition0.checked)){
+      if((condition1.checked && (condition2.checked && condition3.checked)) || (condition0.checked)){
         const message = document.createElement("p");
         message.innerHTML = `恭喜！你符合<strong>公費就養</strong>申請資格！<br><strong>每月可領取就養給付1萬4,874元，並得依意願公費進住榮家</strong>`;
         messageContainer.appendChild(message);

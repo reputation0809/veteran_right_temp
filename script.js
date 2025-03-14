@@ -60,13 +60,13 @@ function showConditions(service) {
 
     const conditions = {
         "identity": ["志願服現役滿10年以上", "於79年2月9日前入營服志願役軍（士）官","於94年8月9日前入營之志願役士兵","因作戰或因公致病、傷或身心障礙而失去工作能力","曾參加民國47年八二三臺海保衛戰役之軍士官兵（含金門馬祖民防自衛隊）"],
-        "school": ["退伍軍人報考高中以上學校", "二專、二技、四技／大學推甄入學", ""],
+        "school": ["就讀國內具有正式學籍之大專校院及研究所", "出國就讀研究所攻讀碩、博士", "為使經濟弱勢之退除役官兵再就學者", "具中低(低)收入戶資格", "校級以下退除役官兵", "參加國內大專校院推廣教育、學分班、空中大學（專校）函授班", "參加政府立案補習班補習，且實際報名參加考試院辦理之國家考試及國(公)營事業機構進用考試"],
         "work": ["退除役官兵參加全日制職業訓練班隊", "結訓次日起4個月內就業", "退除役官兵失業期間連續達1個月以上或屬非自願離職、經輔導會推介就業", "於服役期滿次日起1個月內之新退官兵、經輔導會推介就業", "連續就業滿3個月以上"],
         "care": ["榮民服役期間因戰(公)傷殘、且無固定職業", "榮民年滿61歲", "無固定職業", "全戶所得低於一定標準", "未公費就養之榮民", "榮民之無固定職業之父母及配偶"],
         "medical": ["榮民因為生活輔助需要，符合申請資格", "有診斷證明"],
         "service_care": ["榮民之30歲以下子女，就讀高中職以下學校符合申請資格者", "榮民之30歲以下子女，就讀大學及研究所符合申請資格者"],
         "service_lunch": ["就讀國中、國小之榮民或榮民遺眷子女", "符合低收入戶、中低收入戶","因家庭突發因素無力支付午餐費","或經學校認定清寒無力支付午餐費，並納入午餐補助","有特殊事由經本會評估核認者等條件者"],
-        "retire_money": ["條件 M", "條件 N"],
+        "retire_money": ["支領退休俸、贍養金或生活補助費", "中校階(含)以下人員", "子女在臺灣地區居住，就讀政府立案之公(私)立大專以下，小學以上學校肄業正式生", "領俸人亡故，遺族可請領改支", "依法退伍支領退休俸、贍養金或生活補助費人員", "在臺灣地區設有戶籍之父母、配偶及子女(未成年或未婚成年就讀大學或未婚(含離婚)身心障礙者)", "持有備除役軍人眷屬證", "支領軍職退休俸、贍養金及生活補助費之退除役官兵本人", "領有備除役軍人眷屬證之眷屬（配偶、父母、未成年之未婚子女、就讀國內大學以下學校之已成年未婚子女或持有身心障礙證明文件之未婚(含已離婚)子女）"],
         "fam_identity": ["亡故榮民之配偶，且未再婚者", "亡故榮民之直系血親尊親屬", "亡故榮民之未滿 20 歲未婚子女或未滿 25 歲且就讀國內大學（含）以下學校之未婚子女", "亡故榮民之持有中度以上身心障礙證明之未婚子女", "戰訓或因公殞命軍人之遺族", "領有義士證者之遺眷"],
         "fam_funeral": ["條件 丙", "條件 丁"],
         "fam_cru_assist": ["就養榮民亡故，其無職業現居住於臺灣地區之配偶或直系血親"],
@@ -95,6 +95,9 @@ function showConditions(service) {
             if(service === "care" && (index === 2 || index ===3)){
               div.style.display = "none";
             }
+            if(service === "school" && (index === 5 || index === 6)){
+              div.style.display = "none";
+            }
           
             conditionsList.appendChild(div);
           
@@ -104,6 +107,8 @@ function showConditions(service) {
       if (service === "service_lunch") {    document.getElementById("condition0").addEventListener("change", () => toggleOtherOptions(service));
         }
       if (service === "care") {       document.getElementById("condition1").addEventListener("change", () => toggleOtherOptions(service));
+        }
+      if (service === "school") {       document.getElementById("condition4").addEventListener("change", () => toggleOtherOptions(service));
         }
 
         checkConditions(); // 初始化檢查資格
@@ -147,6 +152,21 @@ function toggleOtherOptions(service_choose) {
           condition3.style.display = "none";
           condition2_c.checked = false;
           condition3_c.checked = false;
+        }
+    }
+  
+      if(service_choose === "school"){
+        const condition1 = document.getElementById("condition4");
+        const condition2 = document.getElementById("condition5").parentElement;
+        const condition3 = document.getElementById("condition6").parentElement;
+        
+        if(condition1.checked){
+          condition2.style.display = "block";
+          condition3.style.display = "block";
+        }
+        else{
+          condition2.style.display = "none";
+          condition3.style.display = "none";
         }
     }
 
@@ -257,6 +277,77 @@ function checkConditions() {
       if((condition2.checked || condition3.checked) && condition4.checked){
         const message = document.createElement("p");
         message.innerHTML = `恭喜！你得<strong>發給推介就業穩定津貼</strong>！<br><strong>榮民每月8千元；第二類退除役官兵每月4千元。 </strong>`;
+        messageContainer.appendChild(message);
+        hasMessage = true;
+      }
+    }
+  
+    if(service === "school"){
+      const condition0 = document.getElementById("condition0");
+      const condition1 = document.getElementById("condition1");
+      const condition2 = document.getElementById("condition2");
+      const condition3 = document.getElementById("condition3");
+      const condition4 = document.getElementById("condition4");
+      const condition5 = document.getElementById("condition5");
+      const condition6 = document.getElementById("condition6");
+      
+      if(condition0.checked || condition1.checked){
+        const message = document.createElement("p");
+        message.innerHTML = `恭喜！你獲得<strong>就學補助生活津貼及獎勵</strong>！<br><strong>提供學雜費補助每學期20,000~80,000元/每學期；成績優異獎勵擇優每學期10,000元(名額400人)。</strong>`;
+        messageContainer.appendChild(message);
+        hasMessage = true;
+      }
+      
+      if(condition2.checked && condition3.checked){
+        const message = document.createElement("p");
+        message.innerHTML = `於就學期間<strong>減輕其經濟壓力</strong>！<br><strong>就學期間按月核發就學生活津貼5,900元。俾以認真向學，充實專業知能，提升就業競爭力，以順利就業。</strong>`;
+        messageContainer.appendChild(message);
+        hasMessage = true;
+      }
+      
+      if(condition5.checked){
+        const message = document.createElement("p");
+        message.innerHTML = `恭喜！你獲得<strong>大專校院進修補助</strong>！<br><strong>每人補助總金額以12萬元為上限，加強輔助對象補助總金額以16萬元為上限，以補助12次為限，每年限申請3次。</strong>`;
+        messageContainer.appendChild(message);
+        hasMessage = true;
+      }
+      
+      if(condition6.checked){
+        const message = document.createElement("p");
+        message.innerHTML = `恭喜！你獲得<strong>就業考試進修補助</strong>！<br><strong>補助總金額以5萬元為上限。補助次數以4次為限，每年限申請1次。</strong>`;
+        messageContainer.appendChild(message);
+        hasMessage = true;
+      }
+    }
+  
+    if(service === "retire_money"){
+      const [condition0, condition1, condition2, condition3, condition4, condition5, condition6, condition7, condition8] = [0,1,2,3,4,5,6,7,8].map(i => document.getElementById(`condition${i}`));
+      
+      if(condition0.checked && condition1.checked && condition2.checked){
+        const message = document.createElement("p");
+        message.innerHTML = `恭喜！你得申請<strong>子女教育補助費</strong>！`;
+        messageContainer.appendChild(message);
+        hasMessage = true;
+      }
+      
+      if(condition3.checked){
+        const message = document.createElement("p");
+        message.innerHTML = `恭喜！你可請領改支下列給付：<br><strong>一、遺屬年金：</strong><br>遺族為配偶、父母、未成年子女或已成年因重度身心障礙而無工作能力之子女可改
+支遺屬年金。<br><strong>二、遺屬一次金：</strong><br>不符申請遺屬年金之遺族，僅能依優先順序共同領受一次金。`;
+        messageContainer.appendChild(message);
+        hasMessage = true;
+      }
+      
+      if(condition4.checked && condition5.checked && condition6.checked){
+        const message = document.createElement("p");
+        message.innerHTML = `恭喜！你可享有<strong>用水、用電優待(僅限申辦一戶)、各榮民總(分)院、軍醫院及門診中心就醫優待(部份掛號費優惠)及國軍英雄館住宿優待</strong>`;
+        messageContainer.appendChild(message);
+        hasMessage = true;
+      }
+      
+      if(condition7.checked || condition8.checked){
+        const message = document.createElement("p");
+        message.innerHTML = `恭喜！你獲得<strong>水電優待</strong>！<br><strong>可擇一個供水（電）戶優待。</strong>`;
         messageContainer.appendChild(message);
         hasMessage = true;
       }
